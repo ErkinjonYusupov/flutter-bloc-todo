@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_todo/models/task.dart';
+import 'blocs/bloc_exports.dart';
+
 import 'package:flutter_bloc_todo/screens/home.dart';
+import 'package:flutter_bloc_todo/screens/tasks_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  BlocOverrides.runZoned(() => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -11,17 +15,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return BlocProvider(
+      create: (context) => TasksBloc()..add(AddTask(task: Task(title: 'title'))),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: SafeArea(child: TasksScreen()),
       ),
-      home: const SafeArea(child: Home()),
     );
   }
 }
-
-
-
-
